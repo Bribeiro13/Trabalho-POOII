@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Helicopter Shooter Game MOO ICT/1.0.0": {
+        "runtime": {
+          "Helicopter Shooter Game MOO ICT.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Helicopter Shooter Game MOO ICT/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
