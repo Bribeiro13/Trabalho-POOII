@@ -32,20 +32,20 @@ D:\Desenvolvimento\!codigos\CS\Presencial\!atividades\WF\13\Helicopter-flying-an
 D:\Desenvolvimento\!codigos\CS\Presencial\!atividades\WF\13\Helicopter-flying-and-shooting-game-windows-form-main\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.pdb
 D:\Desenvolvimento\!codigos\CS\Presencial\!atividades\WF\13\Helicopter-flying-and-shooting-game-windows-form-main\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.genruntimeconfig.cache
 D:\Desenvolvimento\!codigos\CS\Presencial\!atividades\WF\13\Helicopter-flying-and-shooting-game-windows-form-main\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\ref\Helicopter Shooter Game MOO ICT.dll
-C:\DevC\Helicopter Shooter Game MOO ICT\bin\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.exe
-C:\DevC\Helicopter Shooter Game MOO ICT\bin\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.deps.json
-C:\DevC\Helicopter Shooter Game MOO ICT\bin\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.runtimeconfig.json
-C:\DevC\Helicopter Shooter Game MOO ICT\bin\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.dll
-C:\DevC\Helicopter Shooter Game MOO ICT\bin\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.pdb
-C:\DevC\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter_Shooter_Game_MOO_ICT.Form1.resources
-C:\DevC\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter_Shooter_Game_MOO_ICT.Properties.Resources.resources
-C:\DevC\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.csproj.GenerateResource.cache
-C:\DevC\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.GeneratedMSBuildEditorConfig.editorconfig
-C:\DevC\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.AssemblyInfoInputs.cache
-C:\DevC\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.AssemblyInfo.cs
-C:\DevC\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.csproj.CoreCompileInputs.cache
-C:\DevC\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.dll
-C:\DevC\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\refint\Helicopter Shooter Game MOO ICT.dll
-C:\DevC\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.pdb
-C:\DevC\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.genruntimeconfig.cache
-C:\DevC\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\ref\Helicopter Shooter Game MOO ICT.dll
+C:\Users\PC\OneDrive\Documentos\Trabalho_POO2\Helicopter Shooter Game MOO ICT\bin\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.exe
+C:\Users\PC\OneDrive\Documentos\Trabalho_POO2\Helicopter Shooter Game MOO ICT\bin\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.deps.json
+C:\Users\PC\OneDrive\Documentos\Trabalho_POO2\Helicopter Shooter Game MOO ICT\bin\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.runtimeconfig.json
+C:\Users\PC\OneDrive\Documentos\Trabalho_POO2\Helicopter Shooter Game MOO ICT\bin\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.dll
+C:\Users\PC\OneDrive\Documentos\Trabalho_POO2\Helicopter Shooter Game MOO ICT\bin\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.pdb
+C:\Users\PC\OneDrive\Documentos\Trabalho_POO2\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter_Shooter_Game_MOO_ICT.Form1.resources
+C:\Users\PC\OneDrive\Documentos\Trabalho_POO2\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter_Shooter_Game_MOO_ICT.Properties.Resources.resources
+C:\Users\PC\OneDrive\Documentos\Trabalho_POO2\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.csproj.GenerateResource.cache
+C:\Users\PC\OneDrive\Documentos\Trabalho_POO2\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\PC\OneDrive\Documentos\Trabalho_POO2\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.AssemblyInfoInputs.cache
+C:\Users\PC\OneDrive\Documentos\Trabalho_POO2\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.AssemblyInfo.cs
+C:\Users\PC\OneDrive\Documentos\Trabalho_POO2\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.csproj.CoreCompileInputs.cache
+C:\Users\PC\OneDrive\Documentos\Trabalho_POO2\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.dll
+C:\Users\PC\OneDrive\Documentos\Trabalho_POO2\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\refint\Helicopter Shooter Game MOO ICT.dll
+C:\Users\PC\OneDrive\Documentos\Trabalho_POO2\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.pdb
+C:\Users\PC\OneDrive\Documentos\Trabalho_POO2\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\Helicopter Shooter Game MOO ICT.genruntimeconfig.cache
+C:\Users\PC\OneDrive\Documentos\Trabalho_POO2\Helicopter Shooter Game MOO ICT\obj\Debug\net8.0-windows\ref\Helicopter Shooter Game MOO ICT.dll

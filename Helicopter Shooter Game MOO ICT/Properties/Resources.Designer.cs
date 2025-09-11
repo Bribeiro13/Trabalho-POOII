@@ -93,9 +93,9 @@ namespace Helicopter_Shooter_Game_MOO_ICT.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Halicopter {
+        internal static System.Drawing.Bitmap download {
             get {
-                object obj = ResourceManager.GetObject("Halicopter", resourceCulture);
+                object obj = ResourceManager.GetObject("download", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +103,29 @@ namespace Helicopter_Shooter_Game_MOO_ICT.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Imagem_montanha_gif {
+        internal static System.Drawing.Bitmap download__1_ {
             get {
-                object obj = ResourceManager.GetObject("Imagem_montanha_gif", resourceCulture);
+                object obj = ResourceManager.GetObject("download__1_", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap download__2_ {
+            get {
+                object obj = ResourceManager.GetObject("download__2_", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Halicopter {
+            get {
+                object obj = ResourceManager.GetObject("Halicopter", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

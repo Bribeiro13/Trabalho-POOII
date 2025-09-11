@@ -1,40 +1,51 @@
-using System.Numerics;
-using System;
+﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
+
+// evita ambiguidade entre System.Threading.Timer e System.Windows.Forms.Timer
+using Timer = System.Windows.Forms.Timer;
 
 namespace Helicopter_Shooter_Game_MOO_ICT
 {
     public partial class Form1 : Form
     {
-        bool goUp, goDown, shot, gameOver;
-
+        bool gameOver = false;
         int destructions = 0;
         int barriersPassed = 0;
-
         int speed = 8;
         int UFOspeed = 10;
-
+        int index = 0;
         Random rand = new Random();
 
-        int playerSpeed = 7;
-        int index = 0;
+        // gravidade e impulso
+        float gravity = 2f;          // queda mais lenta
+        float jumpStrength = -10f;   // impulso para cima
+        float velocityY = 0f;        // velocidade vertical
 
-        private Color targetBackColor;
-        private bool isTransitioning = false;
-        private int transitionSteps = 30;
-        private int currentStep = 0;
+        // transição de fundo
+        bool isBackgroundTransitioning = false;
+        Image nextBackground;
+        float transitionAlpha = 0f;
 
         private Label txtScoreRight;
-        private Label lblGameOver; // Label para mostrar "Game Over" no centro
+        private Label lblGameOver;
+
+        // delay dos pilares
+        bool pilaresAtivos = false;
 
         public Form1()
         {
             InitializeComponent();
 
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint |
+                          ControlStyles.UserPaint |
+                          ControlStyles.OptimizedDoubleBuffer, true);
+
             this.BackColor = Color.LightSkyBlue;
 
-            // Label do Score no canto superior direito
+            // Score no canto superior direito
             txtScoreRight = new Label();
             txtScoreRight.AutoSize = true;
             txtScoreRight.Font = txtScore.Font;
@@ -59,18 +70,29 @@ namespace Helicopter_Shooter_Game_MOO_ICT
             lblGameOver.Text = "GAME OVER!\nPress Enter to Restart";
             lblGameOver.TextAlign = ContentAlignment.MiddleCenter;
             lblGameOver.Visible = false;
-
             this.Controls.Add(lblGameOver);
             CenterGameOverLabel();
-        }
 
-        private void CenterGameOverLabel()
-        {
-            if (lblGameOver != null)
+            // eventos
+            this.KeyDown += KeyIsDown;
+            this.KeyUp += KeyIsUp;
+            this.MouseDown += Form1_MouseDown;
+
+            GameTimer.Start();
+
+            // inicializa pilares fora da tela à direita
+            pillar1.Left = this.ClientSize.Width + 100;
+            pillar2.Left = this.ClientSize.Width + 400;
+
+            // Timer para ativar pilares após 1,3 segundos
+            Timer delayTimer = new Timer();
+            delayTimer.Interval = 1300;
+            delayTimer.Tick += (s, e) =>
             {
-                lblGameOver.Left = (this.ClientSize.Width - lblGameOver.Width) / 2;
-                lblGameOver.Top = (this.ClientSize.Height - lblGameOver.Height) / 2;
-            }
+                pilaresAtivos = true;
+                delayTimer.Stop();
+            };
+            delayTimer.Start();
         }
 
         private void MainTimerEvent(object sender, EventArgs e)
@@ -78,88 +100,126 @@ namespace Helicopter_Shooter_Game_MOO_ICT
             txtScore.Text = $"Destructions: {destructions}";
             txtScoreRight.Text = $"Score: {barriersPassed}";
 
-            if (isTransitioning)
+            // transição de fundo ao atingir 7 destructions
+            if (destructions == 7 && !isBackgroundTransitioning)
             {
-                currentStep++;
-                float amount = (float)currentStep / transitionSteps;
-                this.BackColor = ColorLerp(this.BackColor, targetBackColor, amount);
+                isBackgroundTransitioning = true;
+                nextBackground = Properties.Resources.download__1_; // sua nova imagem de fundo
+                transitionAlpha = 0f;
+            }
 
-                if (currentStep >= transitionSteps)
+            if (isBackgroundTransitioning)
+            {
+                transitionAlpha += 0.02f; // velocidade da transição
+                if (transitionAlpha >= 1f)
                 {
-                    this.BackColor = targetBackColor;
-                    isTransitioning = false;
+                    transitionAlpha = 1f;
+                    isBackgroundTransitioning = false;
+                    this.BackgroundImage = nextBackground;
                 }
+
+                // cria Bitmap temporário para desenhar fade
+                Bitmap bmp = new Bitmap(this.ClientSize.Width, this.ClientSize.Height);
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    if (this.BackgroundImage != null)
+                        g.DrawImage(this.BackgroundImage, 0, 0, this.ClientSize.Width, this.ClientSize.Height);
+
+                    ColorMatrix cm = new ColorMatrix();
+                    cm.Matrix33 = transitionAlpha;
+                    ImageAttributes ia = new ImageAttributes();
+                    ia.SetColorMatrix(cm);
+
+                    g.DrawImage(nextBackground, new Rectangle(0, 0, this.ClientSize.Width, this.ClientSize.Height),
+                                0, 0, nextBackground.Width, nextBackground.Height, GraphicsUnit.Pixel, ia);
+                }
+
+                this.BackgroundImage = bmp;
             }
 
-            if (goUp == true && player.Top > 0)
+            // gravidade
+            velocityY += gravity * 0.15f;
+            player.Top += (int)velocityY;
+
+            if (player.Top < 0)
             {
-                player.Top -= playerSpeed;
+                player.Top = 0;
+                velocityY = 0;
             }
-            if (goDown == true && player.Top + player.Height < this.ClientSize.Height)
+            if (player.Top + player.Height > this.ClientSize.Height)
             {
-                player.Top += playerSpeed;
+                player.Top = this.ClientSize.Height - player.Height;
+                velocityY = 0;
             }
 
+            // UFO
             ufo.Left -= UFOspeed;
-
             if (ufo.Left + ufo.Width < 0)
             {
                 ChangeUFO();
             }
 
-            foreach (Control x in this.Controls)
+            // pilares (só se ativos)
+            if (pilaresAtivos)
             {
-                if (x is PictureBox && (string)x.Tag == "pillar")
+                foreach (Control x in this.Controls)
                 {
-                    x.Left -= speed;
-
-                    if (x.Left < -200)
+                    if (x is PictureBox && (string)x.Tag == "pillar")
                     {
-                        x.Left = 1000;
-                        barriersPassed++;
-                    }
+                        x.Left -= speed;
+                        if (x.Left < -200)
+                        {
+                            x.Left = this.ClientSize.Width + rand.Next(100, 300);
+                            barriersPassed++;
+                        }
 
-                    if (player.Bounds.IntersectsWith(x.Bounds))
-                    {
-                        GameOver();
+                        if (player.Bounds.IntersectsWith(x.Bounds))
+                        {
+                            GameOver();
+                        }
                     }
                 }
+            }
 
+            // balas (não atravessam pilares)
+            foreach (Control x in this.Controls)
+            {
                 if (x is PictureBox && (string)x.Tag == "bullet")
                 {
+                    bool removeBullet = false;
+
+                    // colisão com pilares
+                    foreach (Control pillar in this.Controls)
+                    {
+                        if (pillar is PictureBox && (string)pillar.Tag == "pillar")
+                        {
+                            if (x.Bounds.IntersectsWith(pillar.Bounds))
+                            {
+                                removeBullet = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (removeBullet)
+                    {
+                        RemoveBullet((PictureBox)x);
+                        continue;
+                    }
+
+                    // movimento da bala
                     x.Left += 25;
 
-                    if (x.Left > 900)
+                    // remove se sair da tela
+                    if (x.Left > this.ClientSize.Width)
                     {
                         RemoveBullet((PictureBox)x);
                     }
-                    else
+                    else if (ufo.Bounds.IntersectsWith(x.Bounds))
                     {
-                        if (ufo.Bounds.IntersectsWith(x.Bounds))
-                        {
-                            RemoveBullet((PictureBox)x);
-                            destructions++;
-                            ChangeUFO();
-
-                            if (destructions == 5)
-                            {
-                                StartBackgroundTransition(Color.Black);
-                            }
-                        }
-                        else
-                        {
-                            foreach (Control pillar in this.Controls)
-                            {
-                                if (pillar is PictureBox && (string)pillar.Tag == "pillar")
-                                {
-                                    if (x.Bounds.IntersectsWith(pillar.Bounds))
-                                    {
-                                        RemoveBullet((PictureBox)x);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
+                        RemoveBullet((PictureBox)x);
+                        destructions++;
+                        ChangeUFO();
                     }
                 }
             }
@@ -178,87 +238,26 @@ namespace Helicopter_Shooter_Game_MOO_ICT
 
         private void KeyIsDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Up)
+            if (e.KeyCode == Keys.Space)
             {
-                goUp = true;
-            }
-            if (e.KeyCode == Keys.Down)
-            {
-                goDown = true;
-            }
-
-            if (e.KeyCode == Keys.Space && shot == false)
-            {
-                MakeBullet();
-                shot = true;
+                velocityY = -10f; // pulo
             }
         }
 
         private void KeyIsUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Up)
-            {
-                goUp = false;
-            }
-            if (e.KeyCode == Keys.Down)
-            {
-                goDown = false;
-            }
-            if (shot == true)
-            {
-                shot = false;
-            }
-
-            if (e.KeyCode == Keys.Enter && gameOver == true)
+            if (e.KeyCode == Keys.Enter && gameOver)
             {
                 RestartGame();
             }
         }
 
-        private void RestartGame()
+        private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
-            goUp = false;
-            goDown = false;
-            shot = false;
-            gameOver = false;
-            destructions = 0;
-            barriersPassed = 0;
-            speed = 8;
-            UFOspeed = 10;
-
-            txtScore.Text = $"Destructions: {destructions}";
-            txtScoreRight.Text = $"Score: {barriersPassed}";
-
-            ChangeUFO();
-
-            player.Top = 119;
-
-            pillar1.Left = 579;
-            pillar2.Left = 253;
-
-            StartBackgroundTransition(Color.LightSkyBlue);
-
-            lblGameOver.Visible = false; // Esconde o label de Game Over ao reiniciar
-
-            GameTimer.Start();
-        }
-
-        private void GameOver()
-        {
-            GameTimer.Stop();
-
-            lblGameOver.Visible = true; // Mostra o texto Game Over no centro da tela
-
-            txtScore.Text = $"Destructions: {destructions}";
-            txtScoreRight.Text = $"Score: {barriersPassed}";
-
-            gameOver = true;
-        }
-
-        private void RemoveBullet(PictureBox bullet)
-        {
-            this.Controls.Remove(bullet);
-            bullet.Dispose();
+            if (e.Button == MouseButtons.Left)
+            {
+                MakeBullet();
+            }
         }
 
         private void MakeBullet()
@@ -267,57 +266,93 @@ namespace Helicopter_Shooter_Game_MOO_ICT
             bullet.BackColor = Color.Maroon;
             bullet.Height = 5;
             bullet.Width = 10;
-
             bullet.Left = player.Left + player.Width;
             bullet.Top = player.Top + player.Height / 2;
-
             bullet.Tag = "bullet";
-
             this.Controls.Add(bullet);
             bullet.BringToFront();
         }
 
+        private void RemoveBullet(PictureBox bullet)
+        {
+            this.Controls.Remove(bullet);
+            bullet.Dispose();
+        }
+
         private void ChangeUFO()
         {
-            if (index > 3)
-            {
-                index = 1;
-            }
-            else
-            {
-                index += 1;
-            }
+            if (index > 3) index = 1;
+            else index++;
 
             switch (index)
             {
-                case 1:
-                    ufo.Image = Properties.Resources.alien1;
-                    break;
-                case 2:
-                    ufo.Image = Properties.Resources.alien2;
-                    break;
-                case 3:
-                    ufo.Image = Properties.Resources.alien3;
-                    break;
+                case 1: ufo.Image = Properties.Resources.alien1; break;
+                case 2: ufo.Image = Properties.Resources.alien2; break;
+                case 3: ufo.Image = Properties.Resources.alien3; break;
             }
 
             ufo.Left = 1000;
             ufo.Top = rand.Next(20, this.ClientSize.Height - ufo.Height);
         }
 
-        private Color ColorLerp(Color start, Color end, float amount)
+        private void GameOver()
         {
-            int r = (int)(start.R + (end.R - start.R) * amount);
-            int g = (int)(start.G + (end.G - start.G) * amount);
-            int b = (int)(start.B + (end.B - start.B) * amount);
-            return Color.FromArgb(r, g, b);
+            GameTimer.Stop();
+
+            lblGameOver.Text = $"GAME OVER!\nDestructions: {destructions}\nScore: {barriersPassed}\n\nPress Enter to Restart";
+            lblGameOver.Visible = true;
+            lblGameOver.BringToFront();
+
+            txtScore.Text = $"Destructions: {destructions}";
+            txtScoreRight.Text = $"Score: {barriersPassed}";
+
+            gameOver = true;
+            CenterGameOverLabel();
         }
 
-        private void StartBackgroundTransition(Color newColor)
+        private void RestartGame()
         {
-            targetBackColor = newColor;
-            currentStep = 0;
-            isTransitioning = true;
+            gameOver = false;
+            destructions = 0;
+            barriersPassed = 0;
+            speed = 8;
+            UFOspeed = 10;
+            velocityY = 0;
+            pilaresAtivos = false;
+
+            txtScore.Text = $"Destructions: {destructions}";
+            txtScoreRight.Text = $"Score: {barriersPassed}";
+
+            ChangeUFO();
+            player.Top = 119;
+
+            // pilares fora da tela à direita
+            pillar1.Left = this.ClientSize.Width + 100;
+            pillar2.Left = this.ClientSize.Width + 400;
+
+            lblGameOver.Text = "GAME OVER!\nPress Enter to Restart";
+            lblGameOver.Visible = false;
+
+            GameTimer.Start();
+
+            // Timer para ativar pilares após 1,3 segundos
+            Timer delayTimer = new Timer();
+            delayTimer.Interval = 1300;
+            delayTimer.Tick += (s, e) =>
+            {
+                pilaresAtivos = true;
+                delayTimer.Stop();
+            };
+            delayTimer.Start();
+        }
+
+        private void CenterGameOverLabel()
+        {
+            if (lblGameOver != null)
+            {
+                lblGameOver.Left = (this.ClientSize.Width - lblGameOver.Width) / 2;
+                lblGameOver.Top = (this.ClientSize.Height - lblGameOver.Height) / 2;
+            }
         }
     }
 }

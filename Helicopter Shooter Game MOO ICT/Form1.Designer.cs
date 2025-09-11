@@ -67,7 +67,6 @@
             // 
             // player
             // 
-            player.BackColor = Color.White;
             player.Image = Properties.Resources.Halicopter;
             player.Location = new Point(119, 137);
             player.Margin = new Padding(4, 3, 4, 3);
@@ -111,8 +110,8 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SkyBlue;
-            BackgroundImage = Properties.Resources.Imagem_montanha_gif;
-            BackgroundImageLayout = ImageLayout.Zoom;
+            BackgroundImage = Properties.Resources.download;
+            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1079, 552);
             Controls.Add(txtScore);
             Controls.Add(ufo);
